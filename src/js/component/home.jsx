@@ -20,7 +20,7 @@ const Home = () => {
 
 	return (
 		<div className="container">
-			<h1>My Todos</h1>
+			<h1>todos</h1>
 			<ul>
 				<li>
 					<input 
@@ -28,7 +28,7 @@ const Home = () => {
 						onChange={(e) => setInputValue(e.target.value)} 
 						value={inputValue}
 						onKeyDown={handleAddTodo}
-						placeholder="What do you need to do"
+						placeholder="What needs to be done?"
 					/>
 				</li>
 				{todos.map((todo, index) => (
@@ -39,7 +39,7 @@ const Home = () => {
 					</li>
 				))}
 			</ul>
-			<div>{todos.length} tasks</div>
+			<div>{todos.length} tasks left</div>
 		</div>
 	);
 };
