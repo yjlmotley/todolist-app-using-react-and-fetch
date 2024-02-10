@@ -76,7 +76,7 @@ input {
 }
 
 
-@media (max-width: 576px) {
+@media (max-width: 479px) {
     input, #sm-screen {
         text-align: center;
         margin-left: 0px;
