@@ -10,7 +10,7 @@ body {
 h1 {
     color: #ebd8d9ff;
     font-family: 'Roboto', sans-serif;
-    font-size: 7rem;
+    font-size: 9rem;
     text-align: center;
 }
 div.todo-card {
@@ -25,6 +25,7 @@ div.todo-card {
         0 20px 1px -9px rgba(0,0,0,0.15),
         0 1rem 1rem rgba(0, 0, 0, 0.15), 
         0 1.5rem 2rem rgba(0, 0, 0, 0.1); 
+    font-size: 25px;
 }
 
 .list-group-item {
@@ -62,8 +63,8 @@ input {
 
 .card-footer {
     background-color: white;
-    height: 32px;
+    height: 38px;
     display: flex;
     align-items: center;
-    font-size: 85%;
+    font-size: 60%;
 }
