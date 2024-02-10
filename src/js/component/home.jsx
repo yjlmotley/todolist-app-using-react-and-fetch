@@ -37,7 +37,7 @@ const Home = () => {
 					) : (
 						todos.map((todo, index) => (
 							<li className="list-group-item" key={index}>
-								<div className="list-group-item-todo" id="sm-screen">
+								<div className="list-group-item-todo" id="screen">
 									{todo}
 								</div>
 								<span className="x-container" onClick={() => handleDeleteTodo(index)}>
