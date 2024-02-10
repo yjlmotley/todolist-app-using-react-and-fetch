@@ -32,18 +32,24 @@ const Home = () => {
 							placeholder="What needs to be done?"
 						/>
 					</li>
-					{todos.map((todo, index) => (
-						<li className="list-group-item" key={index}>
-							<div className="list-group-item-todo">
-								{todo}
-							</div>
-							<span className="x-container" onClick={() => handleDeleteTodo(index)}>
-								<i className="fa-solid fa-x"></i>
-							</span>
-						</li>
-					))}
+					{todos.length === 0 ? (
+						<li className="list-group-item" id="no-tasks">-- No tasks, add a task --</li>
+					) : (
+						todos.map((todo, index) => (
+							<li className="list-group-item" key={index}>
+								<div className="list-group-item-todo">
+									{todo}
+								</div>
+								<span className="x-container" onClick={() => handleDeleteTodo(index)}>
+									<i className="fa-solid fa-x"></i>
+								</span>
+							</li>
+						))
+					)}
 				</ul>
-				<div className="card-footer text-secondary">{todos.length} tasks left</div>
+				<div className="card-footer text-secondary">
+					{todos.length} {todos.length === 1 ? "item" : "items"} left
+				</div>
 			</div>
 		</div>
 	);
