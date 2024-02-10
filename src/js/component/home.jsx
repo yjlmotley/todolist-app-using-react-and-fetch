@@ -19,27 +19,32 @@ const Home = () => {
 	};
 
 	return (
-		<div className="container">
+		<div className="todo-box">
 			<h1>todos</h1>
-			<ul>
-				<li>
-					<input 
-						type="text"
-						onChange={(e) => setInputValue(e.target.value)} 
-						value={inputValue}
-						onKeyDown={handleAddTodo}
-						placeholder="What needs to be done?"
-					/>
-				</li>
-				{todos.map((todo, index) => (
-					<li key={index}>
-						{todo}
-						<span className="x" onClick={() => handleDeleteTodo(index)}>
-							<i class="fa-solid fa-x"></i></span>
+			<div className="card todo-card" style={{ width: "49rem" }}>
+				<ul className="list-group list-group-flush">
+					<li className="list-group-item">
+						<input 
+							type="text"
+							onChange={(e) => setInputValue(e.target.value)} 
+							value={inputValue}
+							onKeyDown={handleAddTodo}
+							placeholder="What needs to be done?"
+						/>
 					</li>
-				))}
-			</ul>
-			<div>{todos.length} tasks left</div>
+					{todos.map((todo, index) => (
+						<li className="list-group-item" key={index}>
+							<div className="list-group-item-todo">
+								{todo}
+							</div>
+							<span className="x-container" onClick={() => handleDeleteTodo(index)}>
+								<i className="fa-solid fa-x"></i>
+							</span>
+						</li>
+					))}
+				</ul>
+				<div className="card-footer text-secondary">{todos.length} tasks left</div>
+			</div>
 		</div>
 	);
 };
