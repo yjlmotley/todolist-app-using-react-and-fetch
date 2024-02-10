@@ -33,11 +33,11 @@ const Home = () => {
 						/>
 					</li>
 					{todos.length === 0 ? (
-						<li className="list-group-item" id="no-tasks">-- No tasks, add a task --</li>
+						<li className="list-group-item no-tasks">-- No tasks, add a task --</li>
 					) : (
 						todos.map((todo, index) => (
 							<li className="list-group-item" key={index}>
-								<div className="list-group-item-todo">
+								<div className="list-group-item-todo" id="sm-screen">
 									{todo}
 								</div>
 								<span className="x-container" onClick={() => handleDeleteTodo(index)}>
@@ -54,5 +54,6 @@ const Home = () => {
 		</div>
 	);
 };
+
 
 export default Home;
