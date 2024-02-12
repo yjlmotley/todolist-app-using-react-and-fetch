@@ -13,10 +13,9 @@ const Home = () => {
 	};
 
 	const handleDeleteTodo = (index) => {
-		const newTodos = [...todos];
-		newTodos.splice(index, 1);
-		setTodos(newTodos);
+		setTodos(todos.filter((todo, i) => index !== i))
 	};
+
 
 	return (
 		<div className="container">
