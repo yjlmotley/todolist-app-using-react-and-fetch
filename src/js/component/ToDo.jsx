@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import FetchAll from "./FetchAll";
 
 
-const Home = () => {
+const TodoList = () => {
 	const [ inputValue, setInputValue ] = useState("");
 	const [ todos, setTodos ] = useState([]);
 
@@ -49,10 +50,11 @@ const Home = () => {
 				<div className="card-footer text-secondary">
 					{todos.length} {todos.length === 1 ? "item" : "items"} left
 				</div>
+				<FetchAll todos={todos} setTodos={setTodos} />
 			</div>
 		</div>
 	);
 };
 
 
-export default Home;
+export default TodoList;
