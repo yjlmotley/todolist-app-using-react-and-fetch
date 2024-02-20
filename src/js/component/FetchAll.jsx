@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 
-const FetchAll = ({ todos, setTodos }) => {
+const FetchAll = ({ todos, setTodos, addTaskToApi, inputValue }) => {
   const [remoteTodos, setRemoteTodos] = useState([]);
 
   useEffect(() => {
@@ -22,6 +22,30 @@ const FetchAll = ({ todos, setTodos }) => {
       .catch((error) => {
         console.error("There has been a problem with your fetch operation:", error);
       });
+  function addTaskToApi() {
+    //fetch to api using PUT and the new array of tasks
+    const inputValueObject = {
+      done: false,
+      label: inputValue,
+      headers: {
+        "Content-Type": "aapplication/json"
+      }
+    }
+    const updatedTodos = [
+      ...todos,
+      inputValueObject
+    ]
+    fetch(
+      "https://playground.4geeks.com/apis/fake/todos/user/yjlmotley", {
+        method: "PUT",
+        body: json.stringigy(updatedTodos)
+      })
+      .then((resp) => {
+        if (resp.ok) {
+          getTasks();
+        }
+      })
+  }  
   }, []);
 
   useEffect(() => {

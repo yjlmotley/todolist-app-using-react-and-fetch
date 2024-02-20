@@ -12,6 +12,8 @@ const TodoList = () => {
 		if (e.key === "Enter" && inputValue.trim() !== "") {
 			setTodos([...todos, { id: Date.now(), label: inputValue.trim(), done: false }]);
       		setInputValue("");
+
+			addTaskToApi();
 		}
 	};
 
@@ -19,6 +21,9 @@ const TodoList = () => {
 		setTodos(todos.filter((todo, i) => index !== i))
 	};
 
+	const addTaskToApi = () => {
+		//implement logic to add tasks to the API
+	};
 
 	return (
 		<div className="container">
@@ -40,7 +45,6 @@ const TodoList = () => {
 						todos.map((todo, index) => (
 							<li className="list-group-item" key={todo.id}>
 								<div className="list-group-item-todo" id="screen">
-									{/* {index + 1}.  */}
 									{todo.label}
 								</div>
 								<span className="x-container" onClick={() => handleDeleteTodo(index)}>
@@ -53,7 +57,7 @@ const TodoList = () => {
 				<div className="card-footer text-secondary">
 					{todos.length} {todos.length === 1 ? "item" : "items"} left
 				</div>
-				<FetchAll todos={todos} remoteTodos={remoteTodos} setTodos={setTodos} />
+				<FetchAll todos={todos} remoteTodos={remoteTodos} setTodos={setTodos} addTaskToApi={addTaskToApi} inputValue={inputValue} />
 			</div>
 		</div>
 	);
