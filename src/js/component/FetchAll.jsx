@@ -1,161 +1,76 @@
-//Reset.v2
+//Reset.vs4
 import React, { useEffect, useState } from "react";
 
+const FetchAll = ({ todos, setTodos, inputValue }) => {
+    const [remoteTodos, setRemoteTodos] = useState([]);
 
-const FetchAll = ({ todos, setTodos, addTaskToApi, inputValue }) => {
-  const [remoteTodos, setRemoteTodos] = useState([]);
+    useEffect(() => {
+        fetch("https://playground.4geeks.com/apis/fake/todos/user/yjlmotley")
+            .then((resp) => {
+                if (!resp.ok) {
+                    throw new Error("Failed to fetch todo list. Status: " + resp.status);
+                }
+                return resp.json();
+            })
+            .then((data) => {
+                console.log("Todo List from API", data);
+                setRemoteTodos(data);
+            })
+            .catch((error) => {
+                console.error("There has been a problem with your fetch operation:", error);
+            });
+    }, []);
 
-  useEffect(() => {
-    fetch(
-      "https://playground.4geeks.com/apis/fake/todos/user/yjlmotley"
-      )
-      .then((resp) => {
-        if (!resp.ok) {
-          throw new Error("Failed to fetch todo list. Status: " + resp.status);
+    useEffect(() => {
+        if (remoteTodos.length > 0) {
+            addRemoteTodos();
         }
-        return resp.json();
-      })
-      .then((data) => {
-        console.log("Todo List from API", data);
-        setRemoteTodos(data);
-      })
-      .catch((error) => {
-        console.error("There has been a problem with your fetch operation:", error);
-      });
-  function addTaskToApi() {
-    //fetch to api using PUT and the new array of tasks
-    const inputValueObject = {
-      done: false,
-      label: inputValue,
-      headers: {
-        "Content-Type": "aapplication/json"
-      }
-    }
-    const updatedTodos = [
-      ...todos,
-      inputValueObject
-    ]
-    fetch(
-      "https://playground.4geeks.com/apis/fake/todos/user/yjlmotley", {
-        method: "PUT",
-        body: json.stringigy(updatedTodos)
-      })
-      .then((resp) => {
-        if (resp.ok) {
-          getTasks();
+    }, [remoteTodos]);
+
+    const addRemoteTodos = () => {
+        setTodos((prevTodos) => [
+            ...prevTodos,
+            ...remoteTodos.map((todo) => ({
+                id: todo.id,
+                label: todo.label,
+                done: false,
+            })),
+        ]);
+    };
+
+    const handleEnterKeyPress = (e) => {
+        if (e.key === "Enter" && inputValue.trim() !== "") {
+            addTaskToApi();
         }
-      })
-  }  
-  }, []);
+    };
 
-  useEffect(() => {
-    if (remoteTodos.length > 0) {
-      addRemoteTodos();
-    }
-  }, [remoteTodos]);
+    const addTaskToApi = () => {
+        const updatedTodos = [
+            ...todos,
+            {
+                id: Date.now(), // Assign a unique ID
+                label: inputValue.trim(),
+                done: false,
+            },
+        ];
 
-  const addRemoteTodos = () => {
-    setTodos((prevTodos) => [...prevTodos, ...remoteTodos.map((todo) => ({ id: todo.id, label: todo.label, done: false }))]);
-  };
+        fetch("https://playground.4geeks.com/apis/fake/todos/user/yjlmotley", {
+            method: "PUT",
+            body: JSON.stringify(updatedTodos),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((resp) => {
+                if (resp.ok) {
+                    // If successful, update the todos state
+                    setTodos(updatedTodos);
+                }
+            })
+            .catch((error) => console.error("Error adding task to API:", error));
+    };
 
-  return null;
+    return null;
 };
 
 export default FetchAll;
-
-
-//----------------------------------------------------------------------------
-// Reset.v1
-// import React, { useEffect } from "react";
-
-
-// const FetchAll = ({ todos, setTodos }) => {
-//   useEffect(() => {
-//     fetch(
-//       "https://playground.4geeks.com/apis/fake/todos/user/yjlmotley"
-//       )
-//       .then((resp) => {
-//         if (!resp.ok) {
-//           throw new Error("Failed to fetch todo list. Status: " + resp.status);
-//         }
-//         return resp.json();
-//       })
-//       .then((data) => {
-//         console.log("Todo List from API", data);
-//       })
-//       .catch((error) => {
-//         console.error("There has been a problem with your fetch operation:", error);
-//       });
-//   }, [todos]);
-
-//   return null;
-// };
-
-// export default FetchAll;
-
-
-// -------------------------------------------------------------------------------------
-
-
-// version without change
-// import React, { useEffect } from "react";
-
-
-// const FetchAll = ({ todos, setTodos }) => {
-//   useEffect(() => {
-//     fetch("https://playground.4geeks.com/apis/fake/todos/user/yjlmotley", {
-//       method: "PUT",
-//       body: JSON.stringify(todos),
-//       headers: {
-//         "Content-Type": "application/json"
-//       }
-//     })
-//       .then((resp) => {
-//         if (!resp.ok) {
-//           throw new Error("Failed to fetch todo list. Status: " + resp.status);
-//         }
-//         return resp.json();
-//       })
-//       .then((data) => {
-//         console.log("Todo List from API", data);
-//         console.log("Response body as a string:", resp.text());
-//       })
-//       .catch((error) => {
-//         console.error("There has been a problem with your fetch operation:", error);
-//       });
-//   }, [todos]);
-
-//   return null;
-// };
-
-// export default FetchAll;
-
-
-// --------------------------------------------------------------
-
-// Ernesto's vs.
-// import React, { useEffect } from "react";
-
-
-// const FetchAll = ({ todos, setTodos }) => {
-//   useEffect(() => {
-//     fetch(
-//       "https://playground.4geeks.com/apis/fake/todos/user/yjlmotley"
-//     )
-//       .then((resp) => {
-//         if (!resp.ok) {
-//           throw Error ("response was not succesfull!");
-//         }
-//           return resp.json();
-//       })
-//       .then((respBodyAsJson) => {
-//         setTodos(respBodyAsJson);
-//       })
-//       .catch((error) => {
-//         alert(error);
-//       })
-//     };
-//   return null;
-// };
-
-// export default FetchAll;
