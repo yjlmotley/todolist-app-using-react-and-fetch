@@ -51,9 +51,29 @@ const TodoList = () => {
     };
 
     const handleDeleteTodo = (index) => {
-        // Remove todo item from the list
+        // Remove todo item from the list locally
         const updatedTodos = todos.filter((todo, i) => index !== i);
         setTodos(updatedTodos);
+        // Update the server data by sending a PUT request
+        deleteTaskFromApi(updatedTodos);
+    };
+
+    const deleteTaskFromApi = (updatedTodos) => {
+        fetch("https://playground.4geeks.com/apis/fake/todos/user/yjlmotley", {
+            method: "PUT",
+            body: JSON.stringify(updatedTodos),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then((resp) => {
+            if (resp.ok) {
+                console.log("Todo deleted successfully from API");
+            } else {
+                console.error("Failed to delete todo from API");
+            }
+        })
+        .catch((error) => console.error("Error deleting task from API:", error));
     };
 
     return (
