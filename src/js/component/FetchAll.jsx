@@ -1,14 +1,23 @@
-//Reset.vs4
 import React, { useEffect, useState } from "react";
 
-const FetchAll = ({ todos, setTodos, inputValue }) => {
+const FetchAll = ({ setTodos }) => {
     const [remoteTodos, setRemoteTodos] = useState([]);
 
     useEffect(() => {
+        fetchTodos();
+    }, []);
+
+    useEffect(() => {
+        if (remoteTodos.length > 0) {
+            addRemoteTodos();
+        }
+    }, [remoteTodos]);
+
+    const fetchTodos = () => {
         fetch("https://playground.4geeks.com/apis/fake/todos/user/yjlmotley")
             .then((resp) => {
                 if (!resp.ok) {
-                    throw new Error("Failed to fetch todo list. Status: " + resp.status);
+                    throw newError("Failed to fetch too list. Status: " + resp.status);
                 }
                 return resp.json();
             })
@@ -19,13 +28,7 @@ const FetchAll = ({ todos, setTodos, inputValue }) => {
             .catch((error) => {
                 console.error("There has been a problem with your fetch operation:", error);
             });
-    }, []);
-
-    useEffect(() => {
-        if (remoteTodos.length > 0) {
-            addRemoteTodos();
-        }
-    }, [remoteTodos]);
+    };
 
     const addRemoteTodos = () => {
         setTodos((prevTodos) => [
@@ -38,39 +41,9 @@ const FetchAll = ({ todos, setTodos, inputValue }) => {
         ]);
     };
 
-    const handleEnterKeyPress = (e) => {
-        if (e.key === "Enter" && inputValue.trim() !== "") {
-            addTaskToApi();
-        }
-    };
-
-    const addTaskToApi = () => {
-        const updatedTodos = [
-            ...todos,
-            {
-                id: Date.now(), // Assign a unique ID
-                label: inputValue.trim(),
-                done: false,
-            },
-        ];
-
-        fetch("https://playground.4geeks.com/apis/fake/todos/user/yjlmotley", {
-            method: "PUT",
-            body: JSON.stringify(updatedTodos),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((resp) => {
-                if (resp.ok) {
-                    // If successful, update the todos state
-                    setTodos(updatedTodos);
-                }
-            })
-            .catch((error) => console.error("Error adding task to API:", error));
-    };
 
     return null;
 };
+
 
 export default FetchAll;

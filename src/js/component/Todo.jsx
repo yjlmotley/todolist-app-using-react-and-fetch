@@ -1,4 +1,3 @@
-//main.vs3
 import React, { useState } from "react";
 import FetchAll from "./FetchAll";
 
@@ -108,7 +107,7 @@ const TodoList = () => {
                 <div className="card-footer text-secondary">
                     {todos.length} {todos.length === 1 ? "item" : "items"} left
                 </div>
-                <FetchAll todos={todos} setTodos={setTodos} inputValue={inputValue} />
+                <FetchAll setTodos={setTodos} />
             </div>
         </div>
     );
