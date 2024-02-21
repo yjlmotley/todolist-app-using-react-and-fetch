@@ -42,7 +42,6 @@ const TodoList = () => {
             .then((resp) => {
                 if (resp.ok) {
                     setTodos(updatedTodos);
-                    fetchTodos(setTodos); // Fetch the updated list of todos
                 }
             })
             .catch((error) => console.error("Error adding task to API:", error));

@@ -19,16 +19,20 @@ export const fetchTodos = (setTodos) => {
 
 const FetchAll = ({ setTodos }) => {
     const [remoteTodos, setRemoteTodos] = useState([]);
+    const [initialFetchDone, setInitialFetchDone] = useState(false);
 
     useEffect(() => {
-        fetchTodos(setTodos); // Pass setTodos to fetchTodos
-    }, [setTodos]); // Add setTodos as a dependency
+        if (!initialFetchDone) {
+            fetchTodos(setTodos);
+            setInitialFetchDone(true);
+        }
+    }, [setTodos, initialFetchDone]);
 
     useEffect(() => {
         if (remoteTodos.length > 0) {
             addRemoteTodos();
         }
-    }, [remoteTodos]);
+    }, [remoteTodos, setTodos]);
 
     const addRemoteTodos = () => {
         setTodos((prevTodos) => [
