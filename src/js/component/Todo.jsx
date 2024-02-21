@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import FetchAll from "./FetchAll";
+import FetchAll, { fetchTodos } from "./FetchAll";
 
 const TodoList = () => {
     const [inputValue, setInputValue] = useState("");
@@ -7,7 +7,6 @@ const TodoList = () => {
 
     const handleAddTodo = (e) => {
         if (e.key === "Enter" && inputValue.trim() !== "") {
-            // Add new todo item to the list
             const newTodo = {
                 id: Date.now(),
                 label: inputValue.trim(),
@@ -15,19 +14,19 @@ const TodoList = () => {
             };
             setTodos([...todos, newTodo]);
 
-			addTaskToApi();
-			console.log("New Todo Added to API: " + newTodo.label);
+            addTaskToApi();
+            console.log("New Todo Added to API: " + newTodo.label);
 
-            setInputValue("");	// Clear input field after adding todo
-
+            setInputValue("");
+            fetchTodos(setTodos); // Request a GET method to fetch updated todos
         }
     };
 
-	const addTaskToApi = () => {
+    const addTaskToApi = () => {
         const updatedTodos = [
             ...todos,
             {
-                id: Date.now(), // Assign a unique ID
+                id: Date.now(),
                 label: inputValue.trim(),
                 done: false,
             },
@@ -42,18 +41,16 @@ const TodoList = () => {
         })
             .then((resp) => {
                 if (resp.ok) {
-                    // If successful, update the todos state
                     setTodos(updatedTodos);
+                    fetchTodos(setTodos); // Fetch the updated list of todos
                 }
             })
             .catch((error) => console.error("Error adding task to API:", error));
     };
 
     const handleDeleteTodo = (index) => {
-        // Remove todo item from the list locally
         const updatedTodos = todos.filter((todo, i) => index !== i);
         setTodos(updatedTodos);
-        // Update the server data by sending a PUT request
         deleteTaskFromApi(updatedTodos);
     };
 
@@ -68,6 +65,7 @@ const TodoList = () => {
         .then((resp) => {
             if (resp.ok) {
                 console.log("Todo deleted successfully from API");
+                fetchTodos(setTodos); // Fetch the updated list of todos
             } else {
                 console.error("Failed to delete todo from API");
             }
