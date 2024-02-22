@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+
 export const fetchTodos = (setTodos) => {
     fetch("https://playground.4geeks.com/apis/fake/todos/user/yjlmotley")
         .then((resp) => {
@@ -18,7 +19,6 @@ export const fetchTodos = (setTodos) => {
 };
 
 const FetchAll = ({ setTodos }) => {
-    const [remoteTodos, setRemoteTodos] = useState([]);
     const [initialFetchDone, setInitialFetchDone] = useState(false);
 
     useEffect(() => {
@@ -28,24 +28,9 @@ const FetchAll = ({ setTodos }) => {
         }
     }, [setTodos, initialFetchDone]);
 
-    useEffect(() => {
-        if (remoteTodos.length > 0) {
-            addRemoteTodos();
-        }
-    }, [remoteTodos, setTodos]);
-
-    const addRemoteTodos = () => {
-        setTodos((prevTodos) => [
-            ...prevTodos,
-            ...remoteTodos.map((todo) => ({
-                id: todo.id,
-                label: todo.label,
-                done: false,
-            })),
-        ]);
-    };
 
     return null;
 };
+
 
 export default FetchAll;

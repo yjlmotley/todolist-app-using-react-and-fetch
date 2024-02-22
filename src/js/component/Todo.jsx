@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import FetchAll, { fetchTodos } from "./FetchAll";
 
+
 const TodoList = () => {
     const [inputValue, setInputValue] = useState("");
     const [todos, setTodos] = useState([]);
@@ -18,7 +19,7 @@ const TodoList = () => {
             console.log("New Todo Added to API: " + newTodo.label);
 
             setInputValue("");
-            fetchTodos(setTodos); // Request a GET method to fetch updated todos
+            fetchTodos(setTodos); //Fetch the updated list of todos on "Enter"
         }
     };
 
@@ -50,27 +51,43 @@ const TodoList = () => {
     const handleDeleteTodo = (index) => {
         const updatedTodos = todos.filter((todo, i) => index !== i);
         setTodos(updatedTodos);
+
         deleteTaskFromApi(updatedTodos);
     };
 
     const deleteTaskFromApi = (updatedTodos) => {
-        fetch("https://playground.4geeks.com/apis/fake/todos/user/yjlmotley", {
+        const apiUrl = "https://playground.4geeks.com/apis/fake/todos/user/yjlmotley";
+        const requestOptions = {
             method: "PUT",
             body: JSON.stringify(updatedTodos),
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "application/json"
             },
-        })
-        .then((resp) => {
-            if (resp.ok) {
-                console.log("Todo deleted successfully from API");
-                fetchTodos(setTodos); // Fetch the updated list of todos
-            } else {
-                console.error("Failed to delete todo from API");
-            }
-        })
-        .catch((error) => console.error("Error deleting task from API:", error));
+        };
+
+        //If there are less than 1 todo, use DELETE method instead of PUT
+        if (updatedTodos.length < 1) {
+            requestOptions.method = "DELETE";
+            delete requestOptions.body; // No need to send body for DELETE method since there is none
+        }
+
+        fetch(apiUrl, requestOptions)
+            .then((resp) => {
+                if (resp.ok) {
+                    if (requestOptions.method === "DELETE") {
+                        console.log("Todos and user successfullly deleted from API");
+                    } else {
+                        console.log("Todos deleted successfully from API");
+                        fetchTodos(setTodos); //Fetch the updated list of todos on delete
+                    }
+
+                } else {
+                    console.error("Failed to delete todo(s) from API");
+                }
+            })
+            .catch((error) => console.error("Error deleting task from API:", error));
     };
+
 
     return (
         <div className="container">
@@ -109,5 +126,6 @@ const TodoList = () => {
         </div>
     );
 };
+
 
 export default TodoList;
