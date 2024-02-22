@@ -19,10 +19,10 @@ export const fetchTodos = (setTodos) => {
         });
 };
 
+// Initial fetch with an effect to make sure the initial fetch only runs once at the beginning
 const FetchAll = ({ setTodos }) => {
     const [initialFetchDone, setInitialFetchDone] = useState(false);
 
-    // Effect to perform initial fetch of todos when browser opens
     useEffect(() => {
         if (!initialFetchDone) {
             fetchTodos(setTodos);
