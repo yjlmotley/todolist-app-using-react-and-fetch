@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import FetchAll, { fetchTodos } from "./FetchAll";
+import { addTaskToApi, deleteTaskFromApi } from "./UpdateApi"; // Import functions from UpdateApi.jsx
 
 
 const TodoList = () => {
@@ -7,7 +8,6 @@ const TodoList = () => {
     const [inputValue, setInputValue] = useState("");
     const [todos, setTodos] = useState([]);
 
-    // Function to handle adding a new todo
     const handleAddTodo = (e) => {
         if (e.key === "Enter" && inputValue.trim() !== "") {
             const newTodo = {
@@ -17,82 +17,21 @@ const TodoList = () => {
             };
             setTodos([...todos, newTodo]);
 
-            addTaskToApi(); // Call function to add the todo to the API
+            addTaskToApi(todos, inputValue, setTodos); // Use addTaskToApi from UpdateApi.jsx
             console.log("New Todo Added to API: " + newTodo.label);
 
             setInputValue("");
-            fetchTodos(setTodos); // Fetch the updated list of todos on "Enter"
+            fetchTodos(setTodos);
         }
     };
 
-    // Function to add a new todo to the API
-    const addTaskToApi = () => {
-        const updatedTodos = [
-            ...todos,
-            {
-                id: Date.now(),
-                label: inputValue.trim(),
-                done: false,
-            },
-        ];
-
-        // Make a PUT request to add the new todo
-        fetch("https://playground.4geeks.com/apis/fake/todos/user/yjlmotley", {
-            method: "PUT",
-            body: JSON.stringify(updatedTodos),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((resp) => {
-                if (resp.ok) {
-                    setTodos(updatedTodos);
-                }
-            })
-            .catch((error) => console.error("Error adding task to API:", error));
-    };
-
-    // Function to handle deleting a todo
     const handleDeleteTodo = (index) => {
         const updatedTodos = todos.filter((todo, i) => index !== i);
         setTodos(updatedTodos);
 
-        deleteTaskFromApi(updatedTodos);
+        deleteTaskFromApi(updatedTodos, setTodos); // Use deleteTaskFromApi from UpdateApi.jsx
     };
 
-    // Function to delete a todo from the API
-    const deleteTaskFromApi = (updatedTodos) => {
-        const apiUrl = "https://playground.4geeks.com/apis/fake/todos/user/yjlmotley";
-        const requestOptions = {
-            method: "PUT",
-            body: JSON.stringify(updatedTodos),
-            headers: {
-                "Content-Type": "application/json"
-            },
-        };
-
-        // If there are less than 1 todo, use DELETE method instead of PUT
-        if (updatedTodos.length < 1) {
-            requestOptions.method = "DELETE";
-            delete requestOptions.body; // No need to send body for DELETE method since there is none
-        }
-
-        fetch(apiUrl, requestOptions)
-            .then((resp) => {
-                if (resp.ok) {
-                    if (requestOptions.method === "DELETE") {
-                        console.log("Todos and user successfullly deleted from API.");
-                    } else {
-                        console.log("Todos deleted successfully from API");
-                        fetchTodos(setTodos); //Fetch the updated list of todos on delete
-                    }
-
-                } else {
-                    console.error("Failed to delete todo(s) from API");
-                }
-            })
-            .catch((error) => console.error("Error deleting task from API:", error));
-    };
 
 
     return (
