@@ -3,9 +3,11 @@ import FetchAll, { fetchTodos } from "./FetchAll";
 
 
 const TodoList = () => {
+    // State variables
     const [inputValue, setInputValue] = useState("");
     const [todos, setTodos] = useState([]);
 
+    // Function to handle adding a new todo
     const handleAddTodo = (e) => {
         if (e.key === "Enter" && inputValue.trim() !== "") {
             const newTodo = {
@@ -15,14 +17,15 @@ const TodoList = () => {
             };
             setTodos([...todos, newTodo]);
 
-            addTaskToApi();
+            addTaskToApi(); // Call function to add the todo to the API
             console.log("New Todo Added to API: " + newTodo.label);
 
             setInputValue("");
-            fetchTodos(setTodos); //Fetch the updated list of todos on "Enter"
+            fetchTodos(setTodos); // Fetch the updated list of todos on "Enter"
         }
     };
 
+    // Function to add a new todo to the API
     const addTaskToApi = () => {
         const updatedTodos = [
             ...todos,
@@ -33,6 +36,7 @@ const TodoList = () => {
             },
         ];
 
+        // Make a PUT request to add the new todo
         fetch("https://playground.4geeks.com/apis/fake/todos/user/yjlmotley", {
             method: "PUT",
             body: JSON.stringify(updatedTodos),
@@ -48,6 +52,7 @@ const TodoList = () => {
             .catch((error) => console.error("Error adding task to API:", error));
     };
 
+    // Function to handle deleting a todo
     const handleDeleteTodo = (index) => {
         const updatedTodos = todos.filter((todo, i) => index !== i);
         setTodos(updatedTodos);
@@ -55,6 +60,7 @@ const TodoList = () => {
         deleteTaskFromApi(updatedTodos);
     };
 
+    // Function to delete a todo from the API
     const deleteTaskFromApi = (updatedTodos) => {
         const apiUrl = "https://playground.4geeks.com/apis/fake/todos/user/yjlmotley";
         const requestOptions = {
@@ -65,7 +71,7 @@ const TodoList = () => {
             },
         };
 
-        //If there are less than 1 todo, use DELETE method instead of PUT
+        // If there are less than 1 todo, use DELETE method instead of PUT
         if (updatedTodos.length < 1) {
             requestOptions.method = "DELETE";
             delete requestOptions.body; // No need to send body for DELETE method since there is none
