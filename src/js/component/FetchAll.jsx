@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 
-// Function to fetch todos from the API
+// Functions to fetch todos from the API
 export const fetchTodos = (setTodos) => {
     fetch("https://playground.4geeks.com/apis/fake/todos/user/yjlmotley")
         .then((resp) => {
@@ -19,7 +19,6 @@ export const fetchTodos = (setTodos) => {
         });
 };
 
-// FetchAll component responsible for fetching todos
 const FetchAll = ({ setTodos }) => {
     const [initialFetchDone, setInitialFetchDone] = useState(false);
 

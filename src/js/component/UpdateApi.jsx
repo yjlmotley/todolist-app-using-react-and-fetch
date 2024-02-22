@@ -1,4 +1,5 @@
-import { fetchTodos } from './FetchAll'; // Import the fetchTodos function from the FetchAll file
+import { fetchTodos } from './FetchAll';
+
 
 export const addTaskToApi = (todos, inputValue, setTodos) => {
     const updatedTodos = [
@@ -20,10 +21,12 @@ export const addTaskToApi = (todos, inputValue, setTodos) => {
         .then((resp) => {
             if (resp.ok) {
                 setTodos(updatedTodos);
+                fetchTodos(setTodos);
             }
         })
         .catch((error) => console.error("Error adding task to API:", error));
 };
+
 
 export const deleteTaskFromApi = (updatedTodos, setTodos) => {
     const apiUrl = "https://playground.4geeks.com/apis/fake/todos/user/yjlmotley";
@@ -46,7 +49,7 @@ export const deleteTaskFromApi = (updatedTodos, setTodos) => {
                 if (requestOptions.method === "DELETE") {
                     console.log("Todos and user successfully deleted from API.");
                 } else {
-                    console.log("Todos deleted successfully from API");
+                    console.log("Todo deleted successfully from API");
                     fetchTodos(setTodos);
                 }
 

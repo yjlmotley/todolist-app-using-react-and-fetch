@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import FetchAll, { fetchTodos } from "./FetchAll";
+import FetchAll from "./FetchAll";
 import { addTaskToApi, deleteTaskFromApi } from "./UpdateApi"; // Import functions from UpdateApi.jsx
 
 
@@ -17,11 +17,10 @@ const TodoList = () => {
             };
             setTodos([...todos, newTodo]);
 
-            addTaskToApi(todos, inputValue, setTodos); // Use addTaskToApi from UpdateApi.jsx
+            addTaskToApi(todos, inputValue, setTodos); // pass on todos, inputValue, and setTodos to addTaskToApi in UpdateApi.jsx
             console.log("New Todo Added to API: " + newTodo.label);
 
             setInputValue("");
-            fetchTodos(setTodos);
         }
     };
 
@@ -29,9 +28,8 @@ const TodoList = () => {
         const updatedTodos = todos.filter((todo, i) => index !== i);
         setTodos(updatedTodos);
 
-        deleteTaskFromApi(updatedTodos, setTodos); // Use deleteTaskFromApi from UpdateApi.jsx
+        deleteTaskFromApi(updatedTodos, setTodos); // pass on updatedTodos and setTodos to deleteTaskFromApi in UpdateApi.jsx
     };
-
 
 
     return (
