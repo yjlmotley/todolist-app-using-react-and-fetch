@@ -75,7 +75,7 @@ const TodoList = () => {
             .then((resp) => {
                 if (resp.ok) {
                     if (requestOptions.method === "DELETE") {
-                        console.log("Todos and user successfullly deleted from API");
+                        console.log("Todos and user successfullly deleted from API.");
                     } else {
                         console.log("Todos deleted successfully from API");
                         fetchTodos(setTodos); //Fetch the updated list of todos on delete

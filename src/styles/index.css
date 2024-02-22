@@ -8,75 +8,15 @@ h1 {
     color: #ebd8d9ff;
     font-size: 9rem;
 }
-div.todo-card {
-    margin: 0 auto;
-    margin-bottom: 8rem;
-    border-radius: 0;
-    background: #fff;
-    box-shadow:
-        0 1px 1px rgba(0,0,0,0.15),
-        0 10px 0 -5px #eee,
-        0 10px 1px -4px rgba(0,0,0,0.15),
-        0 20px 0 -10px #eee,
-        0 20px 1px -9px rgba(0,0,0,0.15),
-        0 1rem 1rem rgba(0, 0, 0, 0.15), 
-        0 1.5rem 2rem rgba(0, 0, 0, 0.1); 
-    font-size: 25px;
-}
 
-input {
-    border: none;
-    width: 100%; 
-}
-li.no-tasks{
-    display: block;
-    text-align: center;
-    font-size: 18px;
-    color: #6c757d;
-}
-.list-group-item {
-    display: inline-flex;
-    justify-content: space-between;
-    padding-left: 70px;
-    padding-right: 70px;
-    color: black;
-}
-.list-group-item:hover .x-container {
-    display: inline-flex;
-}
-
-.list-group-item-todo {
-    max-width: 720px;
-    overflow-x: auto;
-}
-
-.x-container {
-    display: none;
-    padding-right: 30px;
-    padding-left: 30px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    align-items: center;
-}
-.fa-x {
-    color: #ebd8d9ff;
-    font-size: 14px;}
-.fa-x:hover {
-    color: #c6939d;
-}
-
-.card-footer {
-    background-color: white;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    font-size: 60%;
-}
-
-
+/* for sm screens */
 @media (max-width: 479px) {
+    h1 {
+        font-size: 35vw;
+    }
+    input::placeholder, .list-group-item.no-tasks {
+        font-size: 4vw;
+    }
     input, #screen {
         text-align: center;
         width: 100%;
@@ -85,11 +25,15 @@ li.no-tasks{
         padding-left: 20px;
         padding-right: 22px;
     }
+    .list-group-item-todo, input {
+        font-size: 6vw;
+    }
     .x-container {
         padding-left: 6px;
         padding-right: 8px;
     }
 }
+/* for lg screens */
 @media (min-width:991px) {
     input, #screen {
         padding-left: 5px;
