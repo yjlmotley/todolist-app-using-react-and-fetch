@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import FetchAll from "./FetchAll";
-import { addTaskToApi, deleteTaskFromApi } from "./UpdateApi";
+import { addTaskToApi, deleteTaskFromApi, handleCreateUser } from "./UpdateApi";
 
 
 const TodoList = () => {
-    // State variables
     const [inputValue, setInputValue] = useState("");
     const [todos, setTodos] = useState([]);
 
@@ -29,6 +28,10 @@ const TodoList = () => {
         setTodos(updatedTodos);
 
         deleteTaskFromApi(updatedTodos, setTodos); // Pass on updatedTodos and setTodos to deleteTaskFromApi in UpdateApi.jsx
+    };
+
+    const handleCreateUserBtn = () => {
+        handleCreateUser(setTodos);
     };
 
     const handleClearTasks = () => {
@@ -69,10 +72,9 @@ const TodoList = () => {
                 <div className="card-footer text-secondary">
                     {todos.length} {todos.length === 1 ? "item" : "items"} left
                 </div>
-                <FetchAll setTodos={setTodos} />
             </div>
             <div className="btn-div mb-5">
-                <button id="create-user" className="btn btn-light btn-outline-danger fw-bold mb-5 me-2 rounded-0" onClick={handleClearTasks}>
+                <button id="create-user" className="btn btn-light btn-outline-danger fw-bold mb-5 me-2 rounded-0" onClick={handleCreateUserBtn}>
                     Create User
                 </button>
                 <button id="clear-btn" className="btn btn-danger btn-outline-light fw-bold mb-5 rounded-0"  onClick={handleClearTasks}>
@@ -83,6 +85,7 @@ const TodoList = () => {
                 <p className="mb-1"><b>[NOTE]</b>  Create user to save your tasks.</p>
                 <p><b>[WARNING]</b>  Deleting the last task and/or clicking the "Clear All Tasks" button will delete the list as well as the user.</p>
             </footer>
+            <FetchAll setTodos={setTodos} />
         </div>
     );
 };

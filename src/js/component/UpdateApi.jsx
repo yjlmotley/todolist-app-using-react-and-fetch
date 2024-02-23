@@ -38,7 +38,7 @@ export const deleteTaskFromApi = (updatedTodos, setTodos) => {
         },
     };
 
-    if (updatedTodos.length < 1) {
+    if (updatedTodos.length === 0) {
         requestOptions.method = "DELETE";
         delete requestOptions.body;
     }
@@ -58,4 +58,21 @@ export const deleteTaskFromApi = (updatedTodos, setTodos) => {
             }
         })
         .catch((error) => console.error("Error deleting task from API:", error));
+};
+
+export const handleCreateUser = (setTodos) => {
+    fetch("https://playground.4geeks.com/apis/fake/todos/user/yjlmotley", {
+        method: "POST",
+        body: JSON.stringify([]),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((resp) => {
+            if (resp.ok) {
+                console.log("User has been created successfully in API")
+                fetchTodos(setTodos);
+            }
+        })
+        .catch((error) => console.error("Error creating user in API:", error));
 };
