@@ -9,6 +9,7 @@ h1 {
     font-size: 9rem;
 }
 
+
 /* for sm screens */
 @media (max-width: 479px) {
     h1 {

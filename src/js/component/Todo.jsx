@@ -31,11 +31,15 @@ const TodoList = () => {
         deleteTaskFromApi(updatedTodos, setTodos); // Pass on updatedTodos and setTodos to deleteTaskFromApi in UpdateApi.jsx
     };
 
+    const handleCleanAllTasks = () => {
+        setTodos([]);
+    };
+
 
     return (
-        <div className="container">
-            <h1 className="text-center mt-5">todos</h1>
-            <div className="card todo-card mx-auto mt-5" style={{ maxWidth: "800px" }}>
+        <div className="container text-center">
+            <h1 className="mt-5">todos</h1>
+            <div className="card todo-card mx-auto mt-5 mb-5" style={{ maxWidth: "800px" }}>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">
                         <input 
@@ -66,6 +70,9 @@ const TodoList = () => {
                 </div>
                 <FetchAll setTodos={setTodos} />
             </div>
+            <button id="clear-btn" className="btn btn-danger mb-5 rounded-0" style={{ backgroundColor: 'hsl(0, 100%, 38%)' }} onClick={handleCleanAllTasks}>
+                Clean All Tasks
+            </button>
         </div>
     );
 };
