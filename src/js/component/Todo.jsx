@@ -31,8 +31,9 @@ const TodoList = () => {
         deleteTaskFromApi(updatedTodos, setTodos); // Pass on updatedTodos and setTodos to deleteTaskFromApi in UpdateApi.jsx
     };
 
-    const handleCleanAllTasks = () => {
+    const handleClearTasks = () => {
         setTodos([]);
+        deleteTaskFromApi([]);
     };
 
 
@@ -70,9 +71,10 @@ const TodoList = () => {
                 </div>
                 <FetchAll setTodos={setTodos} />
             </div>
-            <button id="clear-btn" className="btn btn-danger mb-5 rounded-0" style={{ backgroundColor: 'hsl(0, 100%, 38%)' }} onClick={handleCleanAllTasks}>
-                Clean All Tasks
+            <button id="clear-btn" className="btn btn-danger mb-5 rounded-0" style={{ backgroundColor: 'hsl(0, 100%, 38%)' }} onClick={handleClearTasks}>
+                Clear All Tasks
             </button>
+            <p>WARNING: Deleting the last task and/or clicking the [Clear All Tasks] button will delete the list as well as the user.</p>
         </div>
     );
 };
