@@ -71,10 +71,18 @@ const TodoList = () => {
                 </div>
                 <FetchAll setTodos={setTodos} />
             </div>
-            <button id="clear-btn" className="btn btn-danger mb-5 rounded-0" style={{ backgroundColor: 'hsl(0, 100%, 38%)' }} onClick={handleClearTasks}>
-                Clear All Tasks
-            </button>
-            <p>WARNING: Deleting the last task and/or clicking the [Clear All Tasks] button will delete the list as well as the user.</p>
+            <div className="btn-div mb-5">
+                <button id="create-user" className="btn btn-light btn-outline-danger fw-bold mb-5 me-2 rounded-0" onClick={handleClearTasks}>
+                    Create User
+                </button>
+                <button id="clear-btn" className="btn btn-danger btn-outline-light fw-bold mb-5 rounded-0"  onClick={handleClearTasks}>
+                    Clear All Tasks
+                </button>
+            </div>
+            <footer>
+                <p className="mb-1"><b>[NOTE]</b>  Create user to save your tasks.</p>
+                <p><b>[WARNING]</b>  Deleting the last task and/or clicking the "Clear All Tasks" button will delete the list as well as the user.</p>
+            </footer>
         </div>
     );
 };
