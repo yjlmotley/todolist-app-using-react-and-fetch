@@ -33,7 +33,7 @@ const TodoList = () => {
 
     const handleClearTasks = () => {
         setTodos([]);
-        deleteTaskFromApi([]);
+        deleteTaskFromApi([], setTodos);
     };
 
 
