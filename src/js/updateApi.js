@@ -1,4 +1,4 @@
-import { fetchTodos } from './FetchAll';
+import { fetchTodos } from './component/FetchAll.jsx';
 
 
 export const addTaskToApi = (todos, inputValue, setTodos) => {

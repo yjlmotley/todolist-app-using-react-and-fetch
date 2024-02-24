@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import FetchAll from "./FetchAll";
-import { addTaskToApi, deleteTaskFromApi, handleCreateUser } from "./UpdateApi";
+import FetchAll from "./FetchAll.jsx";
+import { addTaskToApi, deleteTaskFromApi, handleCreateUser } from "../updateApi.js";
 
 
 const TodoList = () => {
