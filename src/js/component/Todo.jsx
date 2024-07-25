@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import FetchAll from "./FetchAll.jsx";
-import { addTaskToApi, deleteTaskFromApi, handleCreateUser } from "../updateApi.js";
+import { addTaskToApi, deleteTaskFromApi, deleteAllTasksAndUserFromApi, handleCreateUser } from "../updateApi.js";
 
 
 const TodoList = () => {
@@ -24,10 +24,13 @@ const TodoList = () => {
     };
 
     const handleDeleteTodo = (index) => {
+        const todoId = todos[index].id;
+        const todoLabel = todos[index].label;
         const updatedTodos = todos.filter((todo, i) => index !== i);
         setTodos(updatedTodos);
+        console.log("Todo deleted successfully from API: " + todoLabel);
 
-        deleteTaskFromApi(updatedTodos, setTodos); // Pass on updatedTodos and setTodos to deleteTaskFromApi in UpdateApi.jsx
+        deleteTaskFromApi(todoId, setTodos);// Pass on todoId and setTodos to deleteTaskFromApi in updateApi.js
     };
 
     const handleCreateUserBtn = () => {
@@ -36,7 +39,7 @@ const TodoList = () => {
 
     const handleClearTasks = () => {
         setTodos([]);
-        deleteTaskFromApi([], setTodos);
+        deleteAllTasksAndUserFromApi(setTodos);
     };
 
 
@@ -75,15 +78,15 @@ const TodoList = () => {
             </div>
             <div className="btn-div mb-5">
                 <button id="create-user" className="btn btn-light btn-outline-danger fw-bold mb-5 me-2 rounded-0" onClick={handleCreateUserBtn}>
-                    Create User
+                    Create User to Save Tasks
                 </button>
                 <button id="clear-btn" className="btn btn-danger btn-outline-light fw-bold mb-5 rounded-0"  onClick={handleClearTasks}>
-                    Clear All Tasks
+                    Clear User & All Tasks
                 </button>
             </div>
             <footer>
                 <p className="mb-1"><b>[NOTE]</b>  Create user to save your tasks.</p>
-                <p><b>[WARNING]</b>  Deleting the last task and/or clicking the "Clear All Tasks" button will delete the list as well as the user.</p>
+                <p><b>[WARNING]</b>  Clicking the "Clear All Tasks" button will delete the list as well as the user.</p>
             </footer>
             <FetchAll setTodos={setTodos} />
         </div>
