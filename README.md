@@ -2,7 +2,7 @@
 
 
 #### <b>See it live here:
-> https://yjlmotley-todolist-application-using-react-and-fetch-ls446xwrs.vercel.app/
+> https://react-todo-list-application-using-api.vercel.app/
 <b>
 
 <br>
