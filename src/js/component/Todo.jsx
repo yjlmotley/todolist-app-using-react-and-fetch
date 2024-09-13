@@ -1,11 +1,15 @@
-import React, { useState } from "react";
-import FetchAll from "./FetchAll.jsx";
-import { addTaskToApi, deleteTaskFromApi, deleteAllTasksAndUserFromApi, handleCreateUser } from "../updateApi.js";
+import React, { useState, useEffect } from "react";
+// import FetchAll from "./FetchAll.jsx";
+import { addTaskToApi, deleteTaskFromApi, deleteAllTasksAndUserFromApi, handleCreateUser, fetchTodos } from "../updateApi.js";
 
 
 const TodoList = () => {
     const [inputValue, setInputValue] = useState("");
     const [todos, setTodos] = useState([]);
+
+    useEffect(() => {
+        fetchTodos(setTodos);
+    }, [])
 
     const handleAddTodo = (e) => {
         if (e.key === "Enter" && inputValue.trim() !== "") {
@@ -35,11 +39,13 @@ const TodoList = () => {
 
     const handleCreateUserBtn = () => {
         handleCreateUser(setTodos);
+        alert("You can now save tasks.");
     };
 
     const handleClearTasks = () => {
         setTodos([]);
         deleteAllTasksAndUserFromApi(setTodos);
+        alert("Your tasks will now not be saved upon refreshing this page.")
     };
 
 
@@ -88,7 +94,6 @@ const TodoList = () => {
                 <p className="mb-1"><b>[NOTE]</b>  Create user to save your tasks.</p>
                 <p><b>[WARNING]</b>  Clicking the "Clear All Tasks" button will delete the list as well as the user.</p>
             </footer>
-            <FetchAll setTodos={setTodos} />
         </div>
     );
 };

@@ -6,17 +6,17 @@ div.todo-card {
     border-radius: 0;
     background: #fff;
     box-shadow:
-        0 1px 1px rgba(0,0,0,0.15),
+        0 1px 1px rgba(0, 0, 0, 0.15),
         0 10px 0 -5px #eee,
-        0 10px 1px -4px rgba(0,0,0,0.15),
+        0 10px 1px -4px rgba(0, 0, 0, 0.15),
         0 20px 0 -10px #eee,
-        0 20px 1px -9px rgba(0,0,0,0.15),
-        0 1rem 1rem rgba(0, 0, 0, 0.15), 
-        0 1.5rem 2rem rgba(0, 0, 0, 0.1); 
+        0 20px 1px -9px rgba(0, 0, 0, 0.15),
+        0 1rem 1rem rgba(0, 0, 0, 0.15),
+        0 1.5rem 2rem rgba(0, 0, 0, 0.1);
     font-size: 25px;
 }
 
-li.no-tasks{
+li.no-tasks {
     display: block;
     text-align: center;
     font-size: 18px;
@@ -25,7 +25,7 @@ li.no-tasks{
 
 input {
     border: none;
-    width: 100%; 
+    width: 100%;
 }
 
 .list-group-item {
@@ -35,6 +35,7 @@ input {
     padding-right: 70px;
     color: black;
 }
+
 .list-group-item:hover .x-container {
     display: inline-flex;
 }
@@ -54,11 +55,15 @@ input {
     bottom: 0;
     align-items: center;
 }
+
 .fa-x {
     color: #ebd8d9ff;
-    font-size: 14px;}
+    font-size: 14px;
+}
+
 .fa-x:hover {
     color: #c6939d;
+    cursor: pointer;
 }
 
 .card-footer {
