@@ -1,1 +1,13 @@
-* last checked to see if working: 8.8.24 : 5pm EDT
+* last checked for bugs & functionality: 9.13.24
+
+* for this project:
+    * copy in the files from the previous todo project
+    * create updateApi.js file inside the js folder
+    * in the updateApi.js file, add: 
+        * fetchTodos
+        * addTodo
+        * deleteTodo
+        * deleteUser (or deleteTasksAndUser)
+        * bonus: addUser
+    * import those functions into your home.js/Todo.jsx &&
+    * adjust home.js/Todo.jsx so your front end is updated with these functions
