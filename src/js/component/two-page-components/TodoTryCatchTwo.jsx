@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { addTaskToApi, deleteTaskFromApi, deleteAllTasksAndUserFromApi, handleCreateUser, fetchTodos } from "../../api-fetch-try-catch-short.js";
 
 
 const TodoList = () => {
@@ -8,35 +9,6 @@ const TodoList = () => {
     useEffect(() => {
         fetchTodos(setTodos);
     }, []);
-
-    const API_URL = "https://playground.4geeks.com/todo";
-    const user = "yjlmotley";
-    const apiFetch = (url, options = {}) =>
-        fetch(url, options)
-            .then((response) => {
-                // if (!response.ok) throw new Error(`Status: ${response.status}`);
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        throw new Error(`${response.status} - ${response.statusText}: ${text}`);
-                    });
-                }
-                // console.log("raw response from API: ", response);
-                return response.status === 204 ? Promise.resolve() : response.json();
-                // return response.json();
-            });
-    
-    const fetchTodos = (setTodos) => {
-        apiFetch(`${API_URL}/users/${user}`)
-            // .then((data) => setTodos(Array.isArray(data.todos) ? data.todos : []))
-            .then((data) => {
-                // console.log("Data from the API (after jsonified):", data);
-                setTodos(data && Array.isArray(data.todos) ? data.todos : []);
-            })
-            .catch((error) => {
-                console.error("Fetch todos failed:", error);
-            });
-    };
-    
 
     const handleAddTodo = (e) => {
         if (e.key === "Enter" && inputValue.trim() !== "") {
@@ -48,16 +20,7 @@ const TodoList = () => {
             };
             setTodos([...todos, newTodo]);
 
-            apiFetch(`${API_URL}/todos/${user}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ label: inputValue.trim(), is_done: false }),
-            })
-                .then(() => {
-                    console.log("New todo added to API: " + inputValue.trim());
-                    fetchTodos(setTodos);
-                })
-                .catch((error) => console.error("Add task failed:", error));
+            addTaskToApi(inputValue, setTodos);
                 
             setInputValue("");
         }
@@ -71,36 +34,16 @@ const TodoList = () => {
         const updatedTodos = todos.filter((todo, i) => index !== i);
         setTodos(updatedTodos);
         
-        apiFetch(`${API_URL}/todos/${todoId}`, { method: "DELETE" })
-        .then(() => {
-            console.log("Todo deleted successfully from API: " + deletedTodo);
-            fetchTodos(setTodos);
-        })
-        .catch((error) => console.error("Delete task failed:", error));
+        deleteTaskFromApi(todoId, deletedTodo, setTodos);
     };
 
     const handleCreateUserBtn = () => {
-        apiFetch(`${API_URL}/users/${user}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify([]),
-        })
-            .then(() => {
-                console.log(`User, ${user}, has been created successfully in API`);
-                alert("You can now save tasks.");
-                fetchTodos(setTodos);
-            })
-            .catch((error) => console.error("Create user failed:", error));
+        handleCreateUser(setTodos);
     };
 
     const handleClearTasks = () => {
         setTodos([]);
-        apiFetch(`${API_URL}/users/${user}`, { method: "DELETE" })
-        .then(() => {
-            console.log(`User, ${user}, and all their todos deleted successfully from API`);
-            setTodos([]);
-        })
-        .catch((error) => console.error("Delete user failed:", error));
+        deleteAllTasksAndUserFromApi(setTodos);
     };
 
 

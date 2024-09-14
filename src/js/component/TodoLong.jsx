@@ -11,22 +11,18 @@ const TodoList = () => {
 
     const API_URL = "https://playground.4geeks.com/todo";
     const user = "yjlmotley";
-    const apiFetch = (url, options = {}) =>
-        fetch(url, options)
-            .then((response) => {
-                // if (!response.ok) throw new Error(`Status: ${response.status}`);
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        throw new Error(`${response.status} - ${response.statusText}: ${text}`);
-                    });
-                }
-                // console.log("raw response from API: ", response);
-                return response.status === 204 ? Promise.resolve() : response.json();
-                // return response.json();
-            });
     
     const fetchTodos = (setTodos) => {
-        apiFetch(`${API_URL}/users/${user}`)
+        fetch(`${API_URL}/users/${user}`)
+            .then((resp) => {
+                if (!resp.ok) {
+                    return resp.text().then(text => {
+                        throw new Error(`${resp.status} - ${resp.statusText}: ${text}`);
+                    });
+                }
+                // console.log("raw response from API: ", resp);
+                return resp.json();
+            })
             // .then((data) => setTodos(Array.isArray(data.todos) ? data.todos : []))
             .then((data) => {
                 // console.log("Data from the API (after jsonified):", data);
@@ -48,10 +44,15 @@ const TodoList = () => {
             };
             setTodos([...todos, newTodo]);
 
-            apiFetch(`${API_URL}/todos/${user}`, {
+            fetch(`${API_URL}/todos/${user}`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ label: inputValue.trim(), is_done: false }),
+                body: JSON.stringify({
+                    label: inputValue.trim(),
+                    is_done: false,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
             })
                 .then(() => {
                     console.log("New todo added to API: " + inputValue.trim());
@@ -71,7 +72,12 @@ const TodoList = () => {
         const updatedTodos = todos.filter((todo, i) => index !== i);
         setTodos(updatedTodos);
         
-        apiFetch(`${API_URL}/todos/${todoId}`, { method: "DELETE" })
+        fetch(`${API_URL}/todos/${todoId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
         .then(() => {
             console.log("Todo deleted successfully from API: " + deletedTodo);
             fetchTodos(setTodos);
@@ -80,10 +86,12 @@ const TodoList = () => {
     };
 
     const handleCreateUserBtn = () => {
-        apiFetch(`${API_URL}/users/${user}`, {
+        fetch(`${API_URL}/users/${user}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify([]),
+            headers: {
+                "Content-Type": "application/json",
+            },
         })
             .then(() => {
                 console.log(`User, ${user}, has been created successfully in API`);
@@ -95,7 +103,12 @@ const TodoList = () => {
 
     const handleClearTasks = () => {
         setTodos([]);
-        apiFetch(`${API_URL}/users/${user}`, { method: "DELETE" })
+        fetch(`${API_URL}/users/${user}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
         .then(() => {
             console.log(`User, ${user}, and all their todos deleted successfully from API`);
             setTodos([]);

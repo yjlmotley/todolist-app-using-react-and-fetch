@@ -1,4 +1,4 @@
-* last checked for bugs & functionality: 9.13.24
+* last checked for bugs & functionality: 9.14.24
 
 * for this project:
     * copy in the files from the previous todo project
@@ -11,3 +11,17 @@
         * bonus: addUser
     * import those functions into your home.js/Todo.jsx &&
     * adjust home.js/Todo.jsx so your front end is updated with these functions
+
+
+'one-page' branch shows different examples
+* one version without variables: (api-fetch.js to be used with TdoDotThenTwo.jsx)
+    * Todo.jsx is the efficient version of a one page component using .then
+    * TodoLong.jsx is the longer/easier version of a one page component using .then
+    
+    * TodoTryCatch.jsx is the efficient version of a one page component using try catch statements
+    * TodoTryCatchLong.jsx is the longer/easier version of a one page component using try catch statements
+
+* two-page-components folder is for Todo with the functions pages
+    * TodoDotThenTwo.jsx => api-fetch.js, api-fetch-dot-then.js, api-fetch-dot-then-short.js
+    * TodoTryCatchTwo.jsx => api-fetch-try-catch.js, api-fetch-try-catch-short.js
+

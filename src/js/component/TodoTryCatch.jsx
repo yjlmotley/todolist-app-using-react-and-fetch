@@ -11,34 +11,33 @@ const TodoList = () => {
 
     const API_URL = "https://playground.4geeks.com/todo";
     const user = "yjlmotley";
-    const apiFetch = (url, options = {}) =>
-        fetch(url, options)
-            .then((response) => {
-                // if (!response.ok) throw new Error(`Status: ${response.status}`);
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        throw new Error(`${response.status} - ${response.statusText}: ${text}`);
-                    });
-                }
-                // console.log("raw response from API: ", response);
-                return response.status === 204 ? Promise.resolve() : response.json();
-                // return response.json();
-            });
-    
-    const fetchTodos = (setTodos) => {
-        apiFetch(`${API_URL}/users/${user}`)
-            // .then((data) => setTodos(Array.isArray(data.todos) ? data.todos : []))
-            .then((data) => {
-                // console.log("Data from the API (after jsonified):", data);
-                setTodos(data && Array.isArray(data.todos) ? data.todos : []);
-            })
-            .catch((error) => {
-                console.error("Fetch todos failed:", error);
-            });
-    };
-    
 
-    const handleAddTodo = (e) => {
+    // Helper function for API requests
+    const apiRequest = async (url, options = {}) => {
+        const resp = await fetch(url, options);
+        // console.log("raw response from API: ", resp);
+
+        // if (!response.ok) throw new Error(`Status: ${response.status}`);
+        if (!resp.ok) {
+            return resp.text().then(text => {
+                throw new Error(`${resp.status} - ${resp.statusText}: ${text}`);
+            });
+        }
+        return resp.status === 204 ? Promise.resolve() : resp.json();
+        // return resp.json();
+    };
+
+    const fetchTodos = async (setTodos) => {
+        try {
+            const data = await apiRequest(`${API_URL}/users/${user}`)
+            // console.log("Data from the API (after jsonified):", data);
+            setTodos(data && Array.isArray(data.todos) ? data.todos : []);
+        } catch (error) {
+            console.error("Fetch todos failed:", error);
+        }
+    };
+
+    const handleAddTodo = async (e) => {
         if (e.key === "Enter" && inputValue.trim() !== "") {
             // next 6 lines just for front end (w/out API)
             const newTodo = {
@@ -47,60 +46,65 @@ const TodoList = () => {
                 done: false
             };
             setTodos([...todos, newTodo]);
-
-            apiFetch(`${API_URL}/todos/${user}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ label: inputValue.trim(), is_done: false }),
-            })
-                .then(() => {
-                    console.log("New todo added to API: " + inputValue.trim());
-                    fetchTodos(setTodos);
-                })
-                .catch((error) => console.error("Add task failed:", error));
-                
+            
             setInputValue("");
+
+            try {
+                await apiRequest(`${API_URL}/todos/${user}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ label: inputValue.trim(), is_done: false }),
+                });
+                console.log("New todo added to API: " + inputValue.trim());
+                fetchTodos(setTodos);
+            } catch (error) {
+                console.error("Add task failed:", error);
+            }
         }
     };
 
-    const handleDeleteTodo = (index) => {
+    const handleDeleteTodo = async (index) => {
         const todoId = todos[index].id;
         const deletedTodo = todos[index].label;
 
         // next 2 lines just for front end (w/out API)
         const updatedTodos = todos.filter((todo, i) => index !== i);
         setTodos(updatedTodos);
-        
-        apiFetch(`${API_URL}/todos/${todoId}`, { method: "DELETE" })
-        .then(() => {
+
+        try {
+            await apiRequest(`${API_URL}/todos/${todoId}`, { method: "DELETE" });
             console.log("Todo deleted successfully from API: " + deletedTodo);
             fetchTodos(setTodos);
-        })
-        .catch((error) => console.error("Delete task failed:", error));
+        } catch (error) {
+            console.error("Delete task failed:", error);
+        }
     };
 
-    const handleCreateUserBtn = () => {
-        apiFetch(`${API_URL}/users/${user}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify([]),
-        })
-            .then(() => {
-                console.log(`User, ${user}, has been created successfully in API`);
-                alert("You can now save tasks.");
-                fetchTodos(setTodos);
-            })
-            .catch((error) => console.error("Create user failed:", error));
+    const handleCreateUserBtn = async () => {
+        try {
+            await apiRequest(`${API_URL}/users/${user}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify([]),
+            });
+            console.log(`User, ${user}, has been created successfully in API`);
+            alert("You can now save tasks.");
+            await fetchTodos(setTodos);
+        } catch (error) {
+            console.error("Create user failed:", error);
+        }
     };
 
-    const handleClearTasks = () => {
+    const handleClearTasks = async () => {
         setTodos([]);
-        apiFetch(`${API_URL}/users/${user}`, { method: "DELETE" })
-        .then(() => {
-            console.log(`User, ${user}, and all their todos deleted successfully from API`);
+        try {
+            await apiRequest(`${API_URL}/users/${user}`, { method: "DELETE" });
+            console.log(`User, ${user}, and all todos deleted successfully`);
+            alert("Your tasks will now not be saved upon refreshing this page.");
             setTodos([]);
-        })
-        .catch((error) => console.error("Delete user failed:", error));
+        } catch (error) {
+            console.error("Delete user and tasks failed:", error);
+        }
     };
 
 
@@ -110,9 +114,9 @@ const TodoList = () => {
             <div className="card todo-card mx-auto mt-5 mb-5" style={{ maxWidth: "800px" }}>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">
-                        <input 
+                        <input
                             type="text"
-                            onChange={(e) => setInputValue(e.target.value)} 
+                            onChange={(e) => setInputValue(e.target.value)}
                             value={inputValue}
                             onKeyDown={handleAddTodo}
                             placeholder="What needs to be done?"
@@ -141,7 +145,7 @@ const TodoList = () => {
                 <button id="create-user" className="btn btn-light btn-outline-danger fw-bold mb-5 me-2 rounded-0" onClick={handleCreateUserBtn}>
                     Create User to Save Tasks
                 </button>
-                <button id="clear-btn" className="btn btn-danger btn-outline-light fw-bold mb-5 rounded-0"  onClick={handleClearTasks}>
+                <button id="clear-btn" className="btn btn-danger btn-outline-light fw-bold mb-5 rounded-0" onClick={handleClearTasks}>
                     Clear User & All Tasks
                 </button>
             </div>
