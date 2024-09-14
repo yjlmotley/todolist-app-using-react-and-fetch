@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import FetchAll from "./FetchAll.jsx";
 import { addTaskToApi, deleteTaskFromApi, deleteAllTasksAndUserFromApi, handleCreateUser, fetchTodos } from "../updateApi.js";
 
 
@@ -13,6 +12,7 @@ const TodoList = () => {
 
     const handleAddTodo = (e) => {
         if (e.key === "Enter" && inputValue.trim() !== "") {
+            // the next 6 lines are for the front end (w/out API)
             const newTodo = {
                 id: Date.now(),
                 label: inputValue.trim(),
@@ -20,8 +20,7 @@ const TodoList = () => {
             };
             setTodos([...todos, newTodo]);
 
-            addTaskToApi(todos, inputValue, setTodos); // Pass on todos, inputValue, and setTodos to addTaskToApi in UpdateApi.jsx
-            console.log("New Todo Added to API: " + newTodo.label);
+            addTaskToApi(inputValue, setTodos); // Pass on inputValue, and setTodos to addTaskToApi in UpdateApi.jsx
 
             setInputValue("");
         }
@@ -29,23 +28,22 @@ const TodoList = () => {
 
     const handleDeleteTodo = (index) => {
         const todoId = todos[index].id;
-        const todoLabel = todos[index].label;
+        const deletedTodo = todos[index].label;
+
+        // next 2 lines are for front end (w/out API)
         const updatedTodos = todos.filter((todo, i) => index !== i);
         setTodos(updatedTodos);
-        console.log("Todo deleted successfully from API: " + todoLabel);
 
-        deleteTaskFromApi(todoId, setTodos);// Pass on todoId and setTodos to deleteTaskFromApi in updateApi.js
+        deleteTaskFromApi(todoId, deletedTodo, setTodos);// Pass on todoId and setTodos to deleteTaskFromApi in updateApi.js
     };
 
     const handleCreateUserBtn = () => {
         handleCreateUser(setTodos);
-        alert("You can now save tasks.");
     };
 
     const handleClearTasks = () => {
         setTodos([]);
         deleteAllTasksAndUserFromApi(setTodos);
-        alert("Your tasks will now not be saved upon refreshing this page.")
     };
 
 
