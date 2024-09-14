@@ -106,17 +106,21 @@ const TodoList = () => {
     };
 
     const handleClearTasks = () => {
+        // this line below only for front end (w/out API)
         setTodos([]);
+        
         fetch(`${API_URL}/users/${user}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
             },
         })
-            .then(() => {
-                console.log(`User, ${user}, and all their todos deleted successfully from API`);
-                setTodos([]);
-                alert("Your tasks will now not be saved upon refreshing this page.");
+            .then((resp) => {
+                if (resp.ok) {
+                    console.log(`User, ${user}, and all their todos deleted successfully from API`);
+                    setTodos([]);
+                    alert("Your tasks will now not be saved upon refreshing this page.");
+                }
             })
             .catch((error) => console.error("Delete user failed:", error));
     };
