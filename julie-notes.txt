@@ -1,5 +1,7 @@
-* last checked for bugs & functionality: 9.13.24
+* last checked for bugs & functionality: 9.14.24
 
+* check one-page branch for the latest updates for this project
+    (it includes 1 & 2 page versions of the project using .then or try/catch)
 * for this project:
     * copy in the files from the previous todo project
     * create updateApi.js file inside the js folder
