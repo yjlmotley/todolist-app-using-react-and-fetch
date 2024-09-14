@@ -11,7 +11,7 @@ const TodoList = () => {
 
     const API_URL = "https://playground.4geeks.com/todo";
     const user = "yjlmotley";
-    
+
     const fetchTodos = (setTodos) => {
         fetch(`${API_URL}/users/${user}`)
             .then((resp) => {
@@ -32,7 +32,7 @@ const TodoList = () => {
                 console.error("Fetch todos failed:", error);
             });
     };
-    
+
 
     const handleAddTodo = (e) => {
         if (e.key === "Enter" && inputValue.trim() !== "") {
@@ -54,12 +54,14 @@ const TodoList = () => {
                     "Content-Type": "application/json",
                 },
             })
-                .then(() => {
-                    console.log("New todo added to API: " + inputValue.trim());
-                    fetchTodos(setTodos);
+                .then((response) => {
+                    if (response.ok) {
+                        console.log("New todo added to API: " + inputValue.trim());
+                        fetchTodos(setTodos);
+                    }
                 })
                 .catch((error) => console.error("Add task failed:", error));
-                
+
             setInputValue("");
         }
     };
@@ -71,18 +73,20 @@ const TodoList = () => {
         // next 2 lines just for front end (w/out API)
         const updatedTodos = todos.filter((todo, i) => index !== i);
         setTodos(updatedTodos);
-        
+
         fetch(`${API_URL}/todos/${todoId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
             }
         })
-        .then(() => {
-            console.log("Todo deleted successfully from API: " + deletedTodo);
-            fetchTodos(setTodos);
-        })
-        .catch((error) => console.error("Delete task failed:", error));
+            .then((response) => {
+                if (response.ok) {
+                    console.log("Todo deleted successfully from API: " + deletedTodo);
+                    fetchTodos(setTodos);  
+                }
+            })
+            .catch((error) => console.error("Delete task failed:", error));
     };
 
     const handleCreateUserBtn = () => {
@@ -109,11 +113,12 @@ const TodoList = () => {
                 "Content-Type": "application/json",
             },
         })
-        .then(() => {
-            console.log(`User, ${user}, and all their todos deleted successfully from API`);
-            setTodos([]);
-        })
-        .catch((error) => console.error("Delete user failed:", error));
+            .then(() => {
+                console.log(`User, ${user}, and all their todos deleted successfully from API`);
+                setTodos([]);
+                alert("Your tasks will now not be saved upon refreshing this page.");
+            })
+            .catch((error) => console.error("Delete user failed:", error));
     };
 
 
@@ -123,9 +128,9 @@ const TodoList = () => {
             <div className="card todo-card mx-auto mt-5 mb-5" style={{ maxWidth: "800px" }}>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">
-                        <input 
+                        <input
                             type="text"
-                            onChange={(e) => setInputValue(e.target.value)} 
+                            onChange={(e) => setInputValue(e.target.value)}
                             value={inputValue}
                             onKeyDown={handleAddTodo}
                             placeholder="What needs to be done?"
@@ -154,7 +159,7 @@ const TodoList = () => {
                 <button id="create-user" className="btn btn-light btn-outline-danger fw-bold mb-5 me-2 rounded-0" onClick={handleCreateUserBtn}>
                     Create User to Save Tasks
                 </button>
-                <button id="clear-btn" className="btn btn-danger btn-outline-light fw-bold mb-5 rounded-0"  onClick={handleClearTasks}>
+                <button id="clear-btn" className="btn btn-danger btn-outline-light fw-bold mb-5 rounded-0" onClick={handleClearTasks}>
                     Clear User & All Tasks
                 </button>
             </div>

@@ -99,6 +99,7 @@ const TodoList = () => {
         .then(() => {
             console.log(`User, ${user}, and all their todos deleted successfully from API`);
             setTodos([]);
+            alert("Your tasks will now not be saved upon refreshing this page.");
         })
         .catch((error) => console.error("Delete user failed:", error));
     };
